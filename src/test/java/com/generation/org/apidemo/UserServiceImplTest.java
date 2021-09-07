@@ -18,7 +18,6 @@ import static org.mockito.Mockito.when;
 public class UserServiceImplTest
 {
 
-
     private UserService userService;
 
     @Mock
@@ -28,12 +27,17 @@ public class UserServiceImplTest
     @Test
     public void getUserReturnsFindByIdFromUserRepository()
     {
+        /// Arrange
         String name = "Santiago";
         String id = "1";
         User user = new User( name, id );
         when( userRepository.findById( id ) ).thenReturn( Optional.of( user ) );
+
+        /// Act
         userService = new UserServiceImpl( userRepository );
         User foundUser = userService.getUser( id );
+
+        // Asserts
         assertThat( foundUser.getId() ).isEqualTo( id );
         assertThat( foundUser.getName() ).isEqualTo( name );
     }
@@ -41,10 +45,15 @@ public class UserServiceImplTest
     @Test
     public void getUserReturnsNullWhenUserNotFound()
     {
+        /// Arrange
         String id = "1";
         when( userRepository.findById( id ) ).thenReturn( Optional.empty() );
+
+        /// Act
         userService = new UserServiceImpl( userRepository );
         User foundUser = userService.getUser( id );
+
+        // Asserts
         assertThat( foundUser ).isNull();
     }
 }
